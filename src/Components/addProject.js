@@ -1,18 +1,16 @@
 import {useState} from "react";
-import {Button, Modal} from "react-bootstrap";
-import {render} from "react-dom";
+import {Button, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import httpClient from "../http/http-client";
 import {addProject} from "./action";
+import ModalHeader from "react-bootstrap/ModalHeader";
 
-function Example() {
+function AddProject() {
+
     const [show, setShow] = useState(false);
-
     const handleClose = (
-
     ) => setShow(false);
     const handleShow = () => setShow(true);
-    const [modalOpen, setModalOpen] = useState(false);
     const[title, setTitle]= useState('');
     const[content, setContent]= useState('');
     const dispatch= useDispatch();
@@ -22,20 +20,20 @@ function Example() {
                 dispatch(addProject(response.data))
             }
         )
-        setModalOpen(!modalOpen)
+        handleClose()
     }
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" onClick={handleShow} Style={{marginLeft: '200px'}}>
                 Ajouter  projet
             </Button>
 
             <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
+                <ModalHeader closeButton>
                     <Modal.Title>Ajouter projet</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                </ModalHeader>
+                <ModalBody>
                     <div className = "form-group">
                         <label>Title</label>
                         <input type="text" className = "form-control"  name = "title" value={title}
@@ -46,17 +44,21 @@ function Example() {
                         <input type="text" className = "form-control"  name = "description" value={content}
                                onChange={(e) => setContent(e.target.value)}/>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                </ModalBody>
+                <ModalFooter>
+                    <Button variant="secondary" onClick={handleClose} Style={{
+                        width: '50px'
+                    }}>
                         fermer
                     </Button>
-                    <Button variant="primary" onClick={add}>
+                    <Button variant="primary" onClick={add} Style={{
+                        width: '176px'
+                    }}>
                         sauvegarder
                     </Button>
-                </Modal.Footer>
+                </ModalFooter>
             </Modal>
         </>
     );
 }
-export default Example;
+export default AddProject;

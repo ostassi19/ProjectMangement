@@ -1,10 +1,11 @@
 import {Component, useEffect} from "react";
 import {Button, Table} from "react-bootstrap";
-import Example from "./addProject";
 import {useDispatch, useSelector} from "react-redux";
 import httpClient from "../http/http-client";
 import projectReducer from "./reducer";
 import {setProjects} from "./action";
+import AddProject from "./addProject";
+import './project.css'
 
 const ListeProject=() =>{
 
@@ -23,11 +24,12 @@ const ListeProject=() =>{
  {
         return(
             <div>
-                <Example/>
-                <Table striped>
+                <div className="button">
+                    <AddProject/>
+                </div>
+                <Table className="app-container">
                     <thead>
                     <tr>
-                        <th>#</th>
                         <th>Title</th>
                         <th>Description</th>
                     </tr>

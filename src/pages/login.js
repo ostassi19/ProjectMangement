@@ -1,51 +1,47 @@
-import {Component} from "react";
+import {Component, useState} from "react";
 import "./login.css"
+import httpClient from "../http/http-client";
+import {useDispatch, useSelector} from "react-redux";
+import {succes} from "./action";
+import { Navigate } from 'react-router-dom';
+import LoginReducer from "./reducer";
 
-class Login extends Component {
-    handleSubmit = e => {
+const Login =()=> {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const login=(e)=>{
         e.preventDefault();
-        console.log(e.target.email.value);
-
-        if (!e.target.email.value) {
-            alert("Email is required");
-        } else if (!e.target.email.value) {
-            alert("Valid email is required");
-        } else if (!e.target.password.value) {
-            alert("Password is required");
-        } else if (
-            e.target.email.value === "me@example.com" &&
-            e.target.password.value === "123456"
-        ) {
-            alert("Successfully logged in");
-            e.target.email.value = "";
-            e.target.password.value = "";
-        } else {
-            alert("Wrong email or password combination");
-        }
-    };
-
-    handleClick = e => {
-        e.preventDefault();
-
-        alert("Goes to registration page");
-    };
-
-    render() {
+        httpClient.post("/login",{__username: username, __password: password}).then(
+            response =>{
+                localStorage.setItem('token', response.data.token);
+                dispatch(succes())
+            }
+        )
+        console.log('username: ',username,' password:', password)
+    }
+    const Logged= useSelector(state => state.LoginReducer.isLogged);
+    console.log(Logged);
+     if (!Logged){
         return (
             <div className="App">
-                <form className="form" onSubmit={this.handleSubmit}>
+                <form className="form" onSubmit={login}>
                     <div className="input-group">
                         <label htmlFor="email">Username</label>
-                        <input name="username"  />
+                        <input name="username"  value={username}
+                               onChange={(e) => setUsername(e.target.value)}/>
                     </div>
                     <div className="input-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" name="password" />
+                        <label htmlFor="password" >Password</label>
+                        <input type="password" name="password" value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
                     </div>
-                    <button className="primary">Login</button>
+                    <button className="primary" type="submit">Login</button>
                 </form>
             </div>
         );
-    }
+     }
+     else return <Navigate to={'projects'}/>
+
 }
 export default Login;
