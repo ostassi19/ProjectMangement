@@ -26,7 +26,7 @@ function AddProject() {
     return (
         <>
             <Button variant="primary" onClick={handleShow} Style={{marginLeft: '200px'}}>
-                Ajouter  projet
+                Add
             </Button>
 
             <Modal show={show} onHide={handleClose}>
